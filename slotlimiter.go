@@ -20,6 +20,18 @@ func (this *Slotlimiter) GetSlot(key string, concurrencyLimit int) *Slot {
 	return this.getChannel(key, concurrencyLimit)
 }
 
+func (this *Slotlimiter) GetSlots() []string {
+  keys := make([]string, 0, len(this.slots))
+  for key := range this.slots {
+  	keys = append(keys, key)
+  }
+	return keys
+}
+
+func (this *Slotlimiter) SlotsUsed(key string) int {
+	return len(this.slots[key])
+}
+
 /* Wait for a slot forever */
 func (this *Slot) Occupy() {
 	if this != nil {
@@ -38,7 +50,7 @@ func (this *Slot) OccupyWithTimeout(timeout time.Duration) bool {
 	}
 }
 
-func (this *Slot) SlotsUsed(key string) int {
+func (this *Slot) SlotsUsed() int {
 	return len(*this)
 }
 

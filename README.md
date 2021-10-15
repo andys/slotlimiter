@@ -39,5 +39,12 @@ result := slot.OccupyWithTimeout(10 * time.Second)
 // defer is a good way to make sure this is done for you.
 defer slot.Leave()
 
+// How many slots are taken
+n := slot.SlotsUsed()
+n := slotLimiter.SlotsUsed("bigtask")
+
+// List of all slots
+strings := slotLimiter.GetSlots()
+
 ```
 

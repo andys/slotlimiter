@@ -18,7 +18,7 @@ func TestSlotlimiter_Occupy(t *testing.T) {
 		t.Fatal("expected GetSlot to return a channel of capacity 1")
 	}
 
-	if slot.SlotsUsed("test1") != 0 {
+	if pl.SlotsUsed("test1") != 0 {
 		t.Fatal("expected new slot to have 0 users")
 	}
 
@@ -28,7 +28,7 @@ func TestSlotlimiter_Occupy(t *testing.T) {
 		slot.Leave()
 	}()
 
-	if slot.SlotsUsed("test1") != 1 {
+	if pl.SlotsUsed("test1") != 1 {
 		t.Fatal("expected occupied slot to have 1 users")
 	}
 
@@ -38,7 +38,7 @@ func TestSlotlimiter_Occupy(t *testing.T) {
 	}
 	slot.Leave()
 
-	if slot.SlotsUsed("test1") != 0 {
+	if pl.SlotsUsed("test1") != 0 {
 		t.Fatal("expected left slot to have 0 users")
 	}
 }
@@ -62,5 +62,12 @@ func TestSlotlimiter_OccupyWithTimeout(t *testing.T) {
 	}
 	if time.Now().Sub(startedAt).Seconds() < 0.1 {
 		t.Error("OccupyWithTimeout should have taken at least 0.1s")
+	}
+	if len(pl.GetSlots()) != 1 {
+		t.Error("GetSlots should have returned a list of slots with one slot")
+	}
+	str := pl.GetSlots()[0]
+	if str != "test2" {
+		t.Error("GetSlots should have returned a list of slots the slot name, got " + str)
 	}
 }
